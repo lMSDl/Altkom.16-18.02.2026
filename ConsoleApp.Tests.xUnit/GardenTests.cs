@@ -132,14 +132,22 @@ namespace ConsoleApp.Tests.xUnit
             string expectedParameter = "item";
 
             //Act
-            Action action = () => garden.Plant(nullName!);
+            var result = Record.Exception(() => garden.Plant(nullName!));
+
+            //Assert
+            Assert.NotNull(result);
+            var argumentNullException = Assert.IsType<ArgumentNullException>(result);
+            Assert.Equal(expectedParameter, argumentNullException.ParamName);
+
+
+            //Act
+            //Action action = () => garden.Plant(nullName!);
 
             //Assert
             //var argumentNullException = Assert.ThrowsAny<ArgumentException>(action); //uwzględnia hierarchię dziedziczenia wyjątku
             //var argumentNullException = Assert.Throws<ArgumentNullException>(action); //tylko konkretny wyjątek
             //Assert.Equal("item", argumentNullException.ParamName); //wiele asercji w jednym teście jest niezalecane, ale w tym przypadku sprawdzamy, czy wyjątek został rzucony z odpowiednim parametrem, więc jest to uzasadnione - sprawdzamy jedną rzecz pod różnymi kątami
-
-            AssertException<ArgumentNullException>(action, expectedParameter);
+            //AssertException<ArgumentNullException>(action, expectedParameter);
         }
 
         public static IEnumerable<object[]> GetInvalidNames()
