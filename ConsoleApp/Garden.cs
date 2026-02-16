@@ -27,14 +27,20 @@ namespace ConsoleApp
 
             if (Items.Contains(item))
             {
-                item += Items.Count(x => x == item || (x.StartsWith(item) && x.Length > item.Length && int.TryParse(x.Substring(item.Length), out _))) + 1;
+                item = AddDuplicationCounter(item);
             }
 
             Items.Add(item);
             return true;
         }
 
-        public IEnumerable<string> GetItems()
+        private string AddDuplicationCounter(string item)
+        {
+            item += Items.Count(x => x == item || (x.StartsWith(item) && x.Length > item.Length && int.TryParse(x.Substring(item.Length), out _))) + 1;
+            return item;
+        }
+
+        internal IEnumerable<string> GetItems()
         {
             return Items.ToList();
         }
