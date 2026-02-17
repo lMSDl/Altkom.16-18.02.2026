@@ -68,5 +68,41 @@ namespace ConsoleApp.Properties {
                 return ResourceManager.GetString("emptyStringException", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No space in garden for {0}.
+        /// </summary>
+        public static string NoSpaceInGardenFor {
+            get {
+                return ResourceManager.GetString("NoSpaceInGardenFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planting started.
+        /// </summary>
+        public static string PlangingStarted {
+            get {
+                return ResourceManager.GetString("PlangingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planted {0} in the garden.
+        /// </summary>
+        public static string PlantedInGarden {
+            get {
+                return ResourceManager.GetString("PlantedInGarden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plant name changed from {0} to {1}.
+        /// </summary>
+        public static string PlantNameChanged {
+            get {
+                return ResourceManager.GetString("PlantNameChanged", resourceCulture);
+            }
+        }
     }
 }

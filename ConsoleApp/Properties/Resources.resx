@@ -120,4 +120,16 @@
   <data name="emptyStringException" xml:space="preserve">
     <value>Item cannot be empty or whitespace</value>
   </data>
+  <data name="NoSpaceInGardenFor" xml:space="preserve">
+    <value>No space in garden for {0}</value>
+  </data>
+  <data name="PlangingStarted" xml:space="preserve">
+    <value>Planting started</value>
+  </data>
+  <data name="PlantedInGarden" xml:space="preserve">
+    <value>Planted {0} in the garden</value>
+  </data>
+  <data name="PlantNameChanged" xml:space="preserve">
+    <value>Plant name changed from {0} to {1}</value>
+  </data>
 </root>

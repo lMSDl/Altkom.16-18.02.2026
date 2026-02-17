@@ -1,4 +1,6 @@
 ﻿using AutoFixture;
+using ConsoleApp.Properties;
+using Moq;
 
 namespace ConsoleApp.Tests.xUnit
 {
@@ -31,8 +33,9 @@ namespace ConsoleApp.Tests.xUnit
             //opisujemy intencje
             //nie używamy "magicznych" wartości, tylko takie, które mają znaczenie dla testu
             const int MINIMAL_VALID_SIZE = 1; //używamy parametu, który daje minimalny ale wystarczający rozmiar ogrodu, aby test był ważny
-            const string NAME = "a"; //używamy parametru, który daje minimalny przekaz (jak najmniejsze pole do interpretacji) 
-            Garden garden = new Garden(MINIMAL_VALID_SIZE);
+            const string NAME = "a"; //używamy parametru, który daje minimalny przekaz (jak najmniejsze pole do interpretacji)
+            Mock<ILogger> loggerStub = new Mock<ILogger>(); // stub - obiekt, który implementuje interfejs, ale nie ma żadnej logiki (nie robi nic), jest używany do testowania interakcji z zależnościami, które nie są istotne dla testu
+            Garden garden = new Garden(MINIMAL_VALID_SIZE, loggerStub.Object);
 
             //Act
             var result = garden.Plant(NAME);
@@ -246,5 +249,69 @@ namespace ConsoleApp.Tests.xUnit
             Assert.NotSame(items1, items2); //sprawdzamy, czy GetItems zwraca kopię kolekcji, a nie referencję do tej samej kolekcji
         }
 
+
+        [Fact]
+        public void Plant_ValidName_MessageLogged()
+        {
+            const int MINIMAL_VALID_SIZE = 1; 
+            const string NAME = "a";
+            Mock<ILogger> logger = new Mock<ILogger>();
+
+            //logger.Setup(x => x.Log(It.IsAny<string>())).Verifiable(Times.Exactly(2));
+            //logger.Setup(x => x.Log(string.Format(Resources.PlantedInGarden, NAME))).Verifiable();
+            logger.Setup(x => x.Log(string.Format(Resources.PlantedInGarden, NAME))).Verifiable(Times.Once);
+
+            Garden garden = new Garden(MINIMAL_VALID_SIZE, logger.Object);
+
+            //Act
+            var result = garden.Plant(NAME);
+
+            //Assert
+            logger.Verify();
+        }
+
+        [Fact]
+        public void Plant_DuplicatedName_MessageLogged()
+        {
+            //Arrage
+            var fixture = new Fixture();
+            const int MINIMAL_VALID_SIZE = 2;
+            string name = fixture.Create<string>();
+            string duplicatedName = name + 2;
+
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Garden garden = new Garden(MINIMAL_VALID_SIZE, logger.Object);
+            garden.Plant(name);
+
+            //Act
+            garden.Plant(name);
+
+            //Assert
+            logger.Verify(x => x.Log(string.Format(Resources.PlantNameChanged, name, duplicatedName)), Times.Once);
+            //logger.Verify(x => x.Log(It.Is<string>(s => s.Contains(duplicatedName))), Times.Exactly(2));
+            //logger.Verify(x => x.Log(It.Is<string>(s => s.Contains(name))), Times.Exactly(3));
+        }
+
+        [Fact]
+        public void GetLastLog_SingleLog()
+        {
+            //Arrange
+            var fixture = new Fixture();
+            const int INSIGNIFICAT_SIZE = 0;
+            var logger = new Mock<ILogger>();
+
+            var garden = new Garden(INSIGNIFICAT_SIZE, logger.Object);
+
+            var logs = fixture.CreateMany<string>();
+            logger.Setup(x => x.GetLogsAsync(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+                .ReturnsAsync(string.Join("\n", logs));
+
+
+            //Act
+            var result = garden.GetLastLog();
+
+            //Assert
+            Assert.Equal(logs.Last(), result);
+        }
     }
 }
