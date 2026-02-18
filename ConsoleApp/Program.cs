@@ -6,3 +6,6 @@
 
 // See https://aka.ms/new-console-template for more information
 Console.WriteLine("Hello, World!");
+
+//upublicznienie klasy Program, aby można było ją testować w projekcie testowym - alternatywa dla InternalsVisibleTo 
+//public partial class Program;
