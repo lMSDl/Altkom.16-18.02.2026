@@ -5,4 +5,6 @@
   <Project Path="ConsoleApp/ConsoleApp.csproj" />
   <Project Path="Shop.Tests/Shop.Tests.csproj" Id="75bc9715-0d97-42ef-86c3-b41c10234fb0" />
   <Project Path="Shop/Shop.csproj" Id="b8be29c3-4dea-4c9c-996e-eddfbf7a666e" />
+  <Project Path="WebAPI.Tests/WebAPI.Tests.csproj" Id="85bdf5a8-a7de-4f4d-b88a-281756623ebb" />
+  <Project Path="WebAPI/WebAPI.csproj" Id="22fefac1-66cd-4302-8bba-999a3ba20605" />
 </Solution>
