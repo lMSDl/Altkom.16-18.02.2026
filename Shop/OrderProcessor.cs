@@ -23,7 +23,8 @@
                 }
             }
 
-            decimal total = order.Items.Sum(x => x.Quantity * x.UnitPrice);
+            //decimal total = order.Items.Sum(x => x.Quantity * x.UnitPrice);
+            decimal total = CalculateTotal(order.Items);
 
             if (!_paymentService.ProcessPayment(cardNumber, total))
             {
@@ -37,6 +38,11 @@
 
             _orderRepository.SaveOrder(order);
             return true;
+        }
+
+        public static decimal CalculateTotal(IEnumerable<OrderItem> items)
+        {
+            return items.Sum(x => x.Quantity * x.UnitPrice);
         }
     }
 }
